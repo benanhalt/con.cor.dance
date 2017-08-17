@@ -6,6 +6,12 @@ AUTHOR = 'Ben Anhalt'
 SITENAME = 'con.cor.dance'
 SITEURL = ''
 THEME = './Flex'
+SITETITLE = 'con.cor.dance'
+SITESUBTITLE = 'the state of being in harmony'
+#SITEDESCRIPTION = 'Foo Bar\'s Thoughts and Writings'
+SITELOGO = SITEURL + '/images/profile.jpg'
+FAVICON = SITEURL + '/images/favicon.ico'
+
 
 PATH = 'content'
 
