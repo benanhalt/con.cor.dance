@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = 'Ben Anhalt'
 SITENAME = 'con.cor.dance'
 SITEURL = ''
+THEME = './Flex'
 
 PATH = 'content'
 
