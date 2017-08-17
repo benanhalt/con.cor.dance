@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
+from datetime import date
 
 AUTHOR = 'Ben Anhalt'
 SITENAME = 'con.cor.dance'
@@ -12,6 +13,17 @@ SITESUBTITLE = 'the state of being in harmony'
 SITELOGO = SITEURL + '/images/profile.jpg'
 FAVICON = SITEURL + '/images/favicon.ico'
 
+BROWSER_COLOR = '#333'
+ROBOTS = 'index, follow'
+
+CC_LICENSE = {
+    'name': 'Creative Commons Attribution-ShareAlike',
+    'version': '4.0',
+    'slug': 'by-sa'
+}
+
+COPYRIGHT_YEAR = date.today().year
+MAIN_MENU = True
 
 PATH = 'content'
 
