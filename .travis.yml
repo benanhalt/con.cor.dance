@@ -1,0 +1,7 @@
+language: python
+
+install:
+  - pip install pelican markdown
+
+script:
+  - pelican content -s publishconf.py
