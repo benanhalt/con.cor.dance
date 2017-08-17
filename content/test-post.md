@@ -1,5 +1,4 @@
-Title: My First Review
-Date: 2010-12-03 10:20
-Category: Review
+Title: Test Post
+Date: 2017-08-17T13:10-0500
 
-Following is a review of my favorite mechanical keyboard.
+This is a test post.
