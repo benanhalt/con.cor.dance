@@ -6,6 +6,9 @@ install:
 script:
 - pelican content -s publishconf.py
 
+# Thanks to Thomas Parisot for the following deployment strategy as
+# described at https://oncletom.io/2016/travis-ssh-deploy/.
+
 addons:
   ssh_known_hosts: con.cor.dance
 
