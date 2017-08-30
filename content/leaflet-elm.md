@@ -56,10 +56,10 @@ calls to a model update function when received. Outgoing messages
 can be generated upon model updates.
 
 My initial approach was to use this port system to send messages out
-to Javascript for actions like: **add a map to the *div* with id
-`foobar`**, **remove the map from the *div***, **add this WMS layer**, etc. I
+to Javascript for actions like: add a map to the *div* with id
+`foobar`, remove the map from the *div*, add this WMS layer. I
 managed to get this scheme to work, but it was complicated and seemed
-contrary to *TEA*.I was essentially maintaining
+contrary to *TEA*. I was essentially maintaining
 program state in two separate locations, the Elm model and the Leaflet
 interface, and shuttling messages back and forth
 to keep them in sync.
