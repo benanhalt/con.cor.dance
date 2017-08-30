@@ -1,7 +1,7 @@
 Title: Using Leaflet maps in an Elm app
-Date: 2017-08-29
+Date: 2017-08-30
 Category: programming
-Status: draft
+Tags: elm, javascript, leaflet
 
 I recently started a project creating a web app that requires
 displaying maps. This was to be a browser based app, but I wanted to
@@ -42,7 +42,7 @@ programmer.
 
 On the other hand, Leaflet and similar Javascript map libraries make
 use of mutation and side effects with full abandon. The DOM is treated
-as a persistent mutable object within which `div` elements may have a map
+as a persistent mutable object within which div elements may have a map
 objects attached. The map object then provides methods such as
 `setView` or `addLayer` that mutate the state of the map and update
 the DOM to effect the change.
@@ -56,8 +56,8 @@ calls to a model update function when received. Outgoing messages
 can be generated upon model updates.
 
 My initial approach was to use this port system to send messages out
-to Javascript for actions like: add a map to the *div* with id
-`foobar`, remove the map from the *div*, add this WMS layer. I
+to Javascript for actions like: add a map to the div with id
+`foobar`, remove the map from the div, add this WMS layer. I
 managed to get this scheme to work, but it was complicated and seemed
 contrary to *TEA*. I was essentially maintaining
 program state in two separate locations, the Elm model and the Leaflet
@@ -75,7 +75,7 @@ system. There is an undocumented Elm feature called *Native Modules* that
 might make that possible, but I haven't investigated that very much.
 
 Instead, I have currently settled on a solution that involves adding a HTML5
-data attribute with the map state to the to-be Leaflet container *div*s. These
+data attribute with the map state to the to-be Leaflet container divs. These
 divs are also given the class `leaflet-map`.
 
 ```elm
@@ -140,7 +140,7 @@ observer.observe(document.body, {
 });
 ```
 
-The `subtree` flag means to watch for mutations anywhere in the descendents of
+The `subtree` flag means to watch for mutations anywhere in the descendants of
 the observed element, which is the entire page body in this case. The `childList`
 flag will catch additions or removals of elements. The `attributes` flag indicates
 that changes to element attributes are of interest, but the `attributeFilter` allows
@@ -149,7 +149,7 @@ attribute that contains the map information.
 
 ## Mutating the map
 
-Using this mechanism to oserve relevant mutations to the DOM, the corresponding
+Using this mechanism to observe relevant mutations to the DOM, the corresponding
 calls to the Leaflet library can be made to make it match the desired state.
 
 ```javascript
@@ -165,21 +165,24 @@ function processMutations(mutations) {
 }
 ```
 
-The mutation observer invokes its callback with a list of mutations. Each mutation
-object has a list added and a list of removed child nodes, either of which may be empty
-if there was nothing added or removed.
-There is also a type attribute that indicates the type of mutation. Since there is only 
-one attribute that matches the attribute filter, any mutation of the type `"attributes"`
-means the element that was mutated, which is `m.target`, is a map container `div` that needs its map
-to be updated.
+The mutation observer invokes its callback with a list of
+mutations. Each mutation object has a list added and a list of removed
+child nodes, either of which may be empty if there was nothing added
+or removed.  There is also a type attribute that indicates the type of
+mutation. Since there is only one attribute that matches the attribute
+filter, any mutation of the type `"attributes"` means the element that
+was mutated, which is `m.target`, is a map container div that needs
+its map to be updated.
 
-Taking added nodes first, each added node is examined for any elments with class
-`leaflet-map`. In general, the added node may contain an entire subtree with
-multiple maps. For each matching element, the Leaflet map constructor is invoked.
-Leaflet set an undocumented attribute, `_leaflet_id`, on the container element. This
-unique (within the page) id is used as the key in a global dictionary, called `maps`,
-where the Leaflet map object will be stored for later access. Finally, `updateMap` is called
-that to handle setting the map state, which will be explained subsequently.
+Taking added nodes first, each added node is examined for any elements
+with the class `leaflet-map`, because the added node may contain an
+entire subtree with multiple maps. For each matching element, the
+Leaflet map constructor is invoked. Leaflet set an undocumented
+attribute, `_leaflet_id`, on the container element. This unique id is
+used as the key in a global dictionary, called `maps`, where the
+Leaflet map object will be stored for later access. Finally,
+`updateMap` is called that to handle setting the map state, which will
+be explained subsequently.
 
 ```javascript
 function processAddedNodes(addedNodes) {
@@ -197,18 +200,20 @@ function processAddedNodes(addedNodes) {
 }
 ```
 
-If a map is added or the `data-leaflet` attribute is changed, the map needs
-to be updated with current state. The Leaflet map object instance is
-obtained from the global `maps` dictionary according to the `_leaflet_id`
-attribute mentioned above. A separate global `mapLayers` dictionary
-keeps track of the layers that have been added to the map. To accomplish the update,
-all existing layers are first removed. Next, the JSON data that was stored
-in `data-leaflet` attribute needs to obtained. It will be contained in
-`element.dataset.leaflet` property as described in the
-[HTML api](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset).
-This is the JSON data serialized from the Elm application. It is parsed
-and used to add layers to map. Each created layer object is added
-to the `mapLayers` global so they can be accessed later.
+If a map is added or the `data-leaflet` attribute is changed, the map
+needs to be updated with current state. The Leaflet map object
+instance is obtained from the global `maps` dictionary according to
+the `_leaflet_id` attribute mentioned above. A separate global
+`mapLayers` dictionary keeps track of the layers that have been added
+to the map. To accomplish the update, all existing layers are first
+removed. Then, the JSON data that was stored in `data-leaflet`
+attribute needs to obtained. It will be contained in
+the
+[HTMLElement dataset property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset),
+`element.dataset.leaflet`. This is the JSON data serialized from the
+Elm application. It is parsed and used to add layers to map. Each
+created layer object is added to the `mapLayers` global so they can be
+accessed later.
 
 ```javascript
 function updateMap(element) {
@@ -263,10 +268,11 @@ function processRemovedNodes(removedNodes) {
 
 ## Final thoughts
 
-The method described in this article seems to work fairly well, and it is what
-I am currently using in my project. It is still not entirely satisfactory to me,
-because there is quite a bit of incidental complexity, all on the
-unsafe Javascript side of the interface.
+The method described in this article seems to work fairly well, and it
+is what I am currently using in my project. I can't say it is entirely
+satisfactory, because there is quite a bit of incidental complexity,
+all of which is on the unsafe Javascript side of the interface.
 
-I will undoubtedly be revisiting this code. There other features that are needed 
-including selecting regions and synchronizing the view between multiple maps.
+I will undoubtedly be revisiting this code. There other features that
+are needed including selecting regions and synchronizing the view
+between multiple maps.
