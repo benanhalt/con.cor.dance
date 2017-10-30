@@ -21,7 +21,7 @@ addresses, *git-svn* accepts a mapping file that it uses to determine
 the author of the commits as they are replayed into the Git
 repository. The SVN user names can be easily obtained from the log.
 
-```
+```shell
 svn log -q \
    | grep -e '^r' \
    | awk 'BEGIN { FS = "|" }; { print $2 }' \
@@ -61,7 +61,7 @@ development work.
 With the completed `authors.txt` file in hand, a simple migration of
 the SVN trunk into Git is straightforward.
 
-```
+```shell
 git-svn clone --prefix=svn/ --trunk=trunk/Specify \
    --authors-file=authors.txt \
    https://svn.code.sf.net/p/specify/code \
@@ -87,7 +87,7 @@ for reducing the size. Some Googling led me to
 this [StackOverflow answer](https://stackoverflow.com/a/42544963).
 for finding the largest objects in a Git repository.
 
-```
+```shell
 git rev-list --objects --all \
    | git cat-file \
       --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
@@ -117,7 +117,7 @@ Goregaokar,
 [Understanding Git filter-branch and the Git Storage Model](https://manishearth.github.io/blog/2017/03/05/understanding-git-filter-branch/). I
 was quickly able to figure out how to excise the file.
 
-```
+```shell
 git filter-branch -f --prune-empty --index-filter \
    'git rm --cached --ignore-unmatch path/to/file' HEAD
 ```
