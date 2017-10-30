@@ -29,11 +29,11 @@ svn log -q \
    > authors.txt
 ```
 
-In the resulting `authors.txt` file, each user name should have its
-corresponding email addresses added. In the case of Specify, there
+In the resulting `authors.txt` file each user name will need to have
+its corresponding email addresses added. In the case of Specify there
 were several authors listed multiple times under different user
 names. This means that same email was sometimes added on multiple
-lines. I.e. the mapping need not be injective.
+lines. The mapping need not be injective.
 
 The effort to define the mapping is worthwhile, particularly when the
 resulting repository will be pushed GitHub. Having the real email
@@ -83,8 +83,8 @@ time.
 
 Still, I wanted to see what were the worst offenders in terms of file
 size. Perhaps I would learn something that would produce an easy win
-for reducing the size. Some Googling led me to
-this [StackOverflow answer](https://stackoverflow.com/a/42544963).
+for reducing the bloat. Some Googling led me to
+a [StackOverflow answer](https://stackoverflow.com/a/42544963)
 for finding the largest objects in a Git repository.
 
 ```shell
@@ -95,22 +95,22 @@ git rev-list --objects --all \
    | sort --numeric-sort --key=3 
 ```
 
-Sure enough, the largest object was an SQL file of some test data that
+Sure enough, the largest object was an SQL file containing test data that
 had been removed at some point in the past. It was over 170MB. I was
 pretty sure it could be safely removed from the project history, but I
 wanted to see why it was there and when it had gone away.
 
-You can seethe history of deleted files using *git log*, but you have
-to say `git log -- path/to/deleted/file`, or Git will think the file
+You can see the history of deleted files using *git log*, but you have
+to say `git log -- path/to/deleted/file` or else Git will think the file
 path is the name of a branch or something.
 
-In this case, there were only two commits that touched the file. The
+In this case there were only two commits that touched the file. The
 one that added it and the immediate successor with the message
-"Accidently checked in"! No doubt, I could remove this file from the
+"Accidently checked in." No doubt, then. I could remove this file from the
 history and immediately reduce the size of the repository by nearly
 30%.
 
-I've used `git rebase` before to rewrite history, but I knew there
+I've previously used *git rebase* to rewrite history, but I was aware there
 were better options for these kind of bulk operations. This time
 Google turned up an excellent post from Manish
 Goregaokar,
@@ -125,14 +125,14 @@ git filter-branch -f --prune-empty --index-filter \
 The operation took about five minutes to complete. 
 
 Emboldened by this success, I returned to the list of large files in
-search of more targets. I was able to eliminate a few large demo
+search of more bloat. I was able to eliminate a few large demo
 files. I also found instances where whole subdirectories had been
 accidentally committed. In one, someone had committed the actual
-installation directory into the repository including an embedded MySQL
+installation directory into the repository, including an embedded MySQL
 database! In another, the entire source code repository had been added
-as a subdirectory of itself. This didn't add much to the size since
-Git only stores a single copy of identical files. Nevertheless, I blew
-it away, just the same.
+as a subdirectory of itself. The latter didn't add much to the size since
+Git only stores a single copy of identical files. Nevertheless, I
+removed it just the same.
 
 Besides new files, some of these accidental commits also included
 other changes that were reverted by a subsequent commit. I removed
