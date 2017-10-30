@@ -1,8 +1,8 @@
 Title: Migrating the Specify 6 SVN Repository to Git
-Date: Fri Oct 27 12:14:00 CDT 2017
+Date: Mon Oct 30 12:49:25 CDT 2017
 Category: programming
 Tags: svn, git, github
-Status: draft
+
 
 Until now the Specify 6 source code has been version controlled using
 Subversion. The decision was made to migrate the repository to
@@ -41,7 +41,7 @@ addresses means contributors will be correctly attributed.
 
 An interesting aspect of this process is determining the identities of
 past contributors given only the SVN user. My approach was searching
-through project mailing list archives. Everyone who has worked on the
+through the project mailing list archive. Everyone who has worked on the
 project used it at some point, and it records their real names and
 email addresses.
 
@@ -148,9 +148,9 @@ the commit logs for "accident*" and similar messages.
 After all of this, the Git repository ended up being about 350MB
 according to `du -h .git/objects/`. Because Git retains old references
 when using *filter-branch* and *rebase*, the size reduction is not
-immediately apparent even after `git gc`. The easiest way to get an
-accurate measurement is to make a new clone of the repository using
-`git clone file://path/to/cleaned/up/repository new-clone`. Only the
-objects actually reachable from *HEAD* will be brought over, but it is
-necessary to use the `file://` style URI. Cloning the directory
+immediately apparent even after running *git gc*. The easiest way to
+get an accurate measurement is to make a new clone of the repository
+using `git clone file://path/to/cleaned/up/repository new-clone`. Only
+the objects actually reachable from *HEAD* will be brought over, but
+it is necessary to use the `file://` style URI. Cloning the directory
 directly will only create hard links.
