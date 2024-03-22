@@ -46,7 +46,7 @@ AUTHOR_FEED_RSS = None
 
 # Social widget
 SOCIAL = (('github', 'https://github.com/benanhalt'),
-          ('twitter', 'https://twitter.com/benanhalt'),)
+          ('mastodon', 'https://hachyderm.io/@benanhalt'),)
 
 DEFAULT_PAGINATION = False
 
