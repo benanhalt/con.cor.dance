@@ -1,5 +1,5 @@
 Title: Z3bra Puzzle
-Date: 2024-05-24
+Date: 2024-06-06
 Category: programming
 Tags: math, programming, logic, z3
 
