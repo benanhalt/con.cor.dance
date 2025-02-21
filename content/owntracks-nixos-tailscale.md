@@ -9,7 +9,7 @@ Timeline. This article provides a rundown of how I accomplished this
 using an existing home server running NixOS and my existing Tailnet.
 
 
-## Impetus
+## Background
 
 For various reasons I find it useful to be able to review my past
 whereabouts, and Google Timeline has worked fairly well for this
@@ -31,7 +31,7 @@ Android and iOS that send location updates to a server. The server can
 either be an MQTT broker or the OwnTracks Recorder. Using an MQTT
 broker permits live location sharing among devices running the
 app. Since I only care about recording my location history, I can
-forgo the MQTT broker and set the app up to publish updates directly
+forgo the MQTT broker and set up the app to publish updates directly
 to the recorder via HTTP.
 
 The [OwnTracks
@@ -198,7 +198,7 @@ window.owntracks.config = {
 ```
 
 The working frontend looks like the image below and provides options
-to view location history for past date and time ranges and with
+to view location history for past date-time ranges and with
 options for points, lines, and a heatmap. Here I have zoomed the map
 way out to avoid advertising my exact location to the Internet.
 
